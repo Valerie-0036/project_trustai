@@ -1,0 +1,24 @@
+ %0 = _x                                             # EncryptedTensor<int8, shape=(1, 32, 768)>
+ %1 = reshape(%0, newshape=[ -1 768])                # EncryptedTensor<uint1, shape=(32, 768)>
+ %2 = [[-21 -12  ...    0   1]]                      # ClearTensor<int8, shape=(768, 2304)>                       @ /Gemm.matmul
+ %3 = matmul(%1, %2)                                 # EncryptedTensor<uint10, shape=(32, 2304)>                  @ /Gemm.matmul
+ %4 = astype(%3, dtype=float64)                      # EncryptedTensor<float64, shape=(32, 2304)>                 @ /Gemm.matmul_rounding
+ %5 = 0                                              # ClearScalar<uint1>
+ %6 = add(%4, %5)                                    # EncryptedTensor<float64, shape=(32, 2304)>
+ %7 = [[-17415   ... 8  -1134]]                      # ClearTensor<int17, shape=(1, 2304)>
+ %8 = subtract(%6, %7)                               # EncryptedTensor<float64, shape=(32, 2304)>
+ %9 = 0.0001102366846461313                          # ClearScalar<float64>
+%10 = multiply(%9, %8)                               # EncryptedTensor<float64, shape=(32, 2304)>
+%11 = [ 0.480339 ... .00324764]                      # ClearTensor<float32, shape=(2304,)>
+%12 = add(%10, %11)                                  # EncryptedTensor<float64, shape=(32, 2304)>
+%13 = 0.05667226786865627                            # ClearScalar<float64>
+%14 = divide(%12, %13)                               # EncryptedTensor<float64, shape=(32, 2304)>
+%15 = 128                                            # ClearScalar<uint8>
+%16 = add(%14, %15)                                  # EncryptedTensor<float64, shape=(32, 2304)>
+%17 = rint(%16)                                      # EncryptedTensor<float64, shape=(32, 2304)>
+%18 = 0                                              # ClearScalar<uint1>
+%19 = 255                                            # ClearScalar<uint8>
+%20 = clip(%17, %18, %19)                            # EncryptedTensor<float64, shape=(32, 2304)>
+%21 = astype(%20, dtype=int_)                        # EncryptedTensor<uint1, shape=(32, 2304)>
+%22 = reshape(%21, newshape=[   1   32 2304])        # EncryptedTensor<uint1, shape=(1, 32, 2304)>
+return %22

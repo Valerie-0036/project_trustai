@@ -1,0 +1,6 @@
+tensorflow
+matplotlib
+tensorflow-privacy
+concrete-ml
+tf-keras
+numpy<2.0
